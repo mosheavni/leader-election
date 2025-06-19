@@ -101,7 +101,8 @@ Ensure that these are correctly set according to your deployment requirements.
 
 - `/healthz`: Configured as the liveness probe endpoint.
 - `/readyz`: Configured as the readiness probe endpoint.
-- `/api/leader`: Exposes a REST API endpoint to get information about the current leader.
+- `/api/leader`: Exposes a REST API endpoint to get information about the
+current leader.
 
 ## Using as a Sidecar Container
 
@@ -159,7 +160,8 @@ Add the following container to your deployment:
   imagePullPolicy: IfNotPresent
 ```
 
-> **Note:** Ensure that the pod service account is bound to a role with at least the following scopes:
+> **Note:** Ensure that the pod service account is bound to a role with at least
+> the following scopes:
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -190,10 +192,12 @@ rules:
 
 ## Contributing
 
-If you are interested in contributing to the Leader Election project, please follow these steps:
+If you are interested in contributing to the Leader Election project, please
+follow these steps:
 
 1. Fork the repository and create your branch from `main`.
 2. Test your code thoroughly.
 3. Submit a pull request with a detailed explanation of your changes.
 
-We welcome all kinds of contributions: documentation, bug reports, feature requests, and code improvements.
+We welcome all kinds of contributions: documentation, bug reports, feature
+requests, and code improvements.
