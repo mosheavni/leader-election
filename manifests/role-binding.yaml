@@ -9,5 +9,5 @@ roleRef:
   kind: Role
   name: leader-elector
 subjects:
-- kind: ServiceAccount
-  name: leader-elector
+  - kind: ServiceAccount
+    name: leader-elector

@@ -176,19 +176,21 @@ rules:
       - coordination.k8s.io
     resources:
       - leases
-    verbs: get
-      list
-      watch
-      create
-      update
-      patch
-      delete
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
   - apiGroups:
       - ""
     resources:
       - events
-    verbs: create
-      patch
+    verbs:
+      - create
+      - patch
 ```
 
 ## Contributing
