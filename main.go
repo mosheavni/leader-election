@@ -30,7 +30,7 @@ import (
 var (
 	flags pflag.FlagSet
 
-	holderId           = flags.String("id", uuid.NewString(), "The holder identity")
+	holderID           = flags.String("id", uuid.NewString(), "The holder identity")
 	leaseName          = flags.String("lease-name", "", "The lease name")
 	leaseDuration      = flags.Duration("lease-duration", 10*time.Second, "The duration of the lease")
 	leaseRenewDuration = flags.Duration("lease-renew-duration", 5*time.Second, "The duration the leader will try to refresh the lease")
@@ -74,9 +74,6 @@ func serveHTTP(ctx context.Context, leaderC <-chan string) error {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		if _, err := w.Write([]byte("ok\n")); err != nil {
-			logger.Errorf("failed to write response: %v", err)
-		}
 	}
 
 	mux.HandleFunc("/healthz", healthHandler)
@@ -117,6 +114,7 @@ func serveHTTP(ctx context.Context, leaderC <-chan string) error {
 				cancelFunc()
 
 				logger.Warnw("Shutting down server", "gracePeriod", gracePeriod)
+
 				if err := s.Shutdown(shutdownCtx); err != nil {
 					logger.With("err", err).Error("failed to shutdown server")
 				}
@@ -125,6 +123,7 @@ func serveHTTP(ctx context.Context, leaderC <-chan string) error {
 	}()
 
 	logger.Infow("Starting to server http", "addr", *addr)
+
 	return s.ListenAndServe()
 }
 
@@ -135,10 +134,11 @@ func runLeaderElection(ctx context.Context, cs *kubernetes.Clientset) (<-chan st
 	lock := resourcelock.LeaseLock{
 		LeaseMeta: metav1.ObjectMeta{
 			Name:      *leaseName,
-			Namespace: *namespace},
+			Namespace: *namespace,
+		},
 		Client: cs.CoordinationV1(),
 		LockConfig: resourcelock.ResourceLockConfig{
-			Identity:      *holderId,
+			Identity:      *holderID,
 			EventRecorder: eb.NewRecorder(scheme.Scheme, v1.EventSource{Component: "leader-election-controller"}),
 		},
 	}
@@ -207,6 +207,7 @@ func validateFlags() error {
 
 func init() {
 	var err error
+
 	c := log.AddFlags(&flags)
 
 	errors.Must(flags.Parse(os.Args[1:]))
