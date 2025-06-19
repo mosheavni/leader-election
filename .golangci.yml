@@ -1,22 +1,54 @@
-version: "2"
+# This file contains all available configuration options
+# with their default values.
 
+# options for analysis running
 run:
-  timeout: 5m
-  tests: true
+  go: "1.24"
+  # timeout for analysis, e.g. 30s, 5m, default is 1m
+  timeout: 1m
+
+  # exit code when at least one issue was found, default is 1
+  issues-exit-code: 1
+
+  skip-dirs: []
 
 linters:
   enable:
-    - govet
+    - gocyclo
     - errcheck
-    - staticcheck
-    - unused
+    - godox
+    - gci
+    - wsl
+    - lll
+    - gofumpt
+    - nestif
 
-formatters:
-  enable:
-    - gofmt
+# all available settings of specific linters
+linters-settings:
+  godox:
+    severity: warning
+  errcheck:
+    # report about not checking of errors in type assertions: `a := b.(MyStruct)`;
+    # default is false: such cases aren't reported by default.
+    check-type-assertions: true
 
-issues:
-  exclude-rules:
-    - linters:
-        - errcheck
-      text: "defer"
+    # report about assignment of errors to blank identifier: `num, _ := strconv.Atoi(numStr)`;
+    # default is false: such cases aren't reported by default.
+    check-blank: false
+
+  gocyclo:
+    # minimal code complexity to report, 30 by default (but we recommend 10-20)
+    min-complexity: 18
+
+  gci:
+    sections:
+      - standard
+      - default
+
+  lll:
+    # max line length, lines longer will be reported. Default is 120.
+    # '\t' is counted as 1 character by default, and can be changed with the tab-width option
+    line-length: 140
+
+  nestif:
+    min-complexity: 4

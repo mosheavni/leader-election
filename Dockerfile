@@ -3,7 +3,7 @@ ARG BASE_IMAGE=docker.io/library/ubuntu:22.04
 #################
 # Builder layer #
 #################
-FROM docker.io/library/golang:1.18 as builder
+FROM docker.io/library/golang:1.24 as builder
 
 WORKDIR /go/src/github.com/rkrmr33/leader-election
 
@@ -26,13 +26,13 @@ USER root
 ENV DEBIAN_FRONENT=noninteractive
 
 RUN groupadd -g 999 leader-elector && \
-    useradd -r -u 999 -g leader-elector leader-elector && \
-    mkdir -p /home/leader-elector && \
-    chown leader-elector:0 /home/leader-elector && \
-    chmod g=u /home/leader-elector && \
-    apt-get update && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  useradd -r -u 999 -g leader-elector leader-elector && \
+  mkdir -p /home/leader-elector && \
+  chown leader-elector:0 /home/leader-elector && \
+  chmod g=u /home/leader-elector && \
+  apt-get update && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy binary from build step
 COPY --from=builder /go/src/github.com/rkrmr33/leader-election/dist/leader-elector /usr/local/bin/
