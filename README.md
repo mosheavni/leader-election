@@ -54,6 +54,8 @@ created successfully:
 
 ### Testing Leader Election
 
+![demo](https://github.com/user-attachments/assets/d91e69c1-6fe1-4b52-a49d-1b497e1a99db)
+
 The deployment creates a debug pod named `net-debug`, pre-installed with the
    `curl` command-line tool. The pod runs a command to sleep for 100,000
 seconds, effectively keeping it alive for manual testing and debugging purposes.
