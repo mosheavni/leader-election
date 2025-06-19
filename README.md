@@ -160,7 +160,8 @@ Add the following container to your deployment:
   imagePullPolicy: IfNotPresent
 ```
 
-> **Note:** Ensure that the pod service account is bound to a role with at least
+> [!IMPORTANT]
+> Ensure that the pod service account is bound to a role with at least
 > the following scopes:
 
 ```yaml
