@@ -74,7 +74,9 @@ func serveHTTP(ctx context.Context, leaderC <-chan string) error {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("ok\n"))
+		if _, err := w.Write([]byte("ok\n")); err != nil {
+			logger.Errorf("failed to write response: %v", err)
+		}
 	}
 
 	mux.HandleFunc("/healthz", healthHandler)
@@ -111,8 +113,8 @@ func serveHTTP(ctx context.Context, leaderC <-chan string) error {
 			case newLeader := <-leaderC:
 				leader = newLeader
 			case <-ctx.Done():
-				shutdownCtx, cancel := context.WithTimeout(context.Background(), gracePeriod)
-				defer cancel()
+				shutdownCtx, cancelFunc := context.WithTimeout(context.Background(), gracePeriod)
+				cancelFunc()
 
 				logger.Warnw("Shutting down server", "gracePeriod", gracePeriod)
 				if err := s.Shutdown(shutdownCtx); err != nil {

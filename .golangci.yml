@@ -1,3 +1,5 @@
+version: "2"
+
 run:
   timeout: 5m
   tests: true
@@ -7,9 +9,10 @@ linters:
     - govet
     - errcheck
     - staticcheck
-    - gosimple
     - unused
-    - deadcode
+
+formatters:
+  enable:
     - gofmt
 
 issues:
